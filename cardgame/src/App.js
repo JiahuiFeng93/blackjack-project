@@ -1,8 +1,8 @@
 import React from 'react';
 // import logo from './logo.svg';
 import './App.css';
-
 import { Layout, Header } from './Layout.components';
+import CardTable from './CardTable';
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
         This is a card game!
       </Header>
       <Layout>
-        Hello
+        <CardTable/>
       </Layout>
     </div>
   );
