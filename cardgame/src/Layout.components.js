@@ -15,3 +15,9 @@ export const Header = styled.header`
     color: whitesmoke;
     padding: 16px 0;
 `;
+
+export const CardLayout = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin: 16px;
+`;

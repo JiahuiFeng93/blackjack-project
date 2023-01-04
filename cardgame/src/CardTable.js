@@ -1,18 +1,30 @@
 import React from 'react';
 import { createDeckAndDraw } from './api';
+import { CardLayout } from './Layout.components';
+import { Buttons } from './Buttons';
 
 class CardTable extends React.Component {
     state = {
-
+        cardImageUrl: null,
+        cardValue: null,
+        deckId: null,
     }
 
     componentDidMount = async () => {
-        await createDeckAndDraw();
+       const { deckId, value, image } = await createDeckAndDraw();
+       this.setState({
+        deckId: deckId,
+        cardValue: value,
+        cardImageUrl: image
+       });
     }
 
     render() {
         return (
-            <div>Something</div>
+            <CardLayout>
+                <img src={this.state.cardImageUrl} alt="This is your card"/>
+                <Buttons/>
+            </CardLayout>
         )
     }
 }

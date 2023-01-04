@@ -5,12 +5,21 @@ const api = axios.create({
 });
 
 const createDeckAndDraw = async () => {
-    const response = await api.get('new/shuffle/', {  // You can also just take the data from the response by using "const { data } = " rather than "const response = "
+    const { data } = await api.get('new/shuffle/', {  // You can just take the data from the response by using "const { data } = " rather than "const response = "
         params: {
             deck_count: 1
         }
     })
-    console.log(response);
+    
+    const { deck_id: deckId } = data;
+
+    const { data: cardDrawn } = await api.get(`${deckId}/draw/`, {
+        params: {
+            count: 1
+        }
+    });
+
+    return { ...cardDrawn.cards[0], deckId }
 };
 
 export { createDeckAndDraw };
