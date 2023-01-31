@@ -1,13 +1,15 @@
 import React from 'react';
-import { createDeckAndDraw } from './api';
+import { createDeckAndDraw, drawCardFromDeck } from './api';
 import { CardLayout } from './Layout.components';
 import { Buttons } from './Buttons';
+import { compareValues } from './utils';
 
 class CardTable extends React.Component {
     state = {
         cardImageUrl: null,
         cardValue: null,
         deckId: null,
+        result: null
     }
 
     componentDidMount = async () => {
@@ -19,11 +21,35 @@ class CardTable extends React.Component {
        });
     }
 
+    onButtonClick = async ({target: {name: choice}}) => {
+        const {deckId, cardValue: previousCardValue} = this.state;
+        const {value: currentCardValue, image, remaining} = await drawCardFromDeck(deckId);
+        const result = compareValues({
+            previousCardValue,
+            currentCardValue,
+            choice
+        })
+
+        this.setState({
+            result,
+            cardValue: currentCardValue,
+            cardImageUrl: image,
+        })
+
+        if(remaining === 0){
+            this.setState({
+                result: "are out of cards!"
+               });
+        }
+    }
+
     render() {
+        const {result, cardImageUrl} = this.state;
         return (
             <CardLayout>
-                <img src={this.state.cardImageUrl} alt="This is your card"/>
-                <Buttons/>
+                <img src={cardImageUrl} alt="This is your card"/>
+                <Buttons onButtonClick={this.onButtonClick}/>
+                {result && <h2>{`You ${result}`}</h2>}
             </CardLayout>
         )
     }

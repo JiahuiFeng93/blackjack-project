@@ -13,13 +13,23 @@ const createDeckAndDraw = async () => {
     
     const { deck_id: deckId } = data;
 
-    const { data: cardDrawn } = await api.get(`${deckId}/draw/`, {
-        params: {
-            count: 1
-        }
-    });
-
-    return { ...cardDrawn.cards[0], deckId }
+    const cardDrawn = await drawCardFromDeck(deckId)
+    // console.log(cardDrawn);
+    return cardDrawn;
 };
 
-export { createDeckAndDraw };
+const drawCardFromDeck = async (deckId) => {
+    const {data} = await api.get(`${deckId}/draw/`, {
+        params: {
+            count: 1,
+        }
+    });
+    
+
+    const {cards, remaining} = data;
+    const {value, image} = cards[0];
+    console.log(data);
+    return {deckId, value, image, remaining};
+}
+
+export { createDeckAndDraw, drawCardFromDeck };
